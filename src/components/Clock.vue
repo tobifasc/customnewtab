@@ -1,6 +1,7 @@
 <template>
     <div class="clock">
-        <span>{{ time }}</span>
+        <div id="time">{{ time }}</div>
+        <div id="date">{{ date }}</div>
     </div>
 </template>
 
@@ -11,17 +12,20 @@
         name: "clock",
         data () {
             return {
-                time: ''
+                time: '',
+                date: ''
             }
         },
         methods: {
             updateTime () {
-                this.time = moment().format('LTS');
+                this.time = moment().format('HH:mm:ss');
             }
         },
         mounted () {
             this.updateTime();
             this.interval = setInterval(this.updateTime, 1000);
+
+            this.date = moment().format('YYYY-MM-DD');
         },
         beforeDestroy () {
             clearInterval(this.interval);
@@ -32,6 +36,8 @@
 <style scoped>
     .clock {
         grid-area: status;
+    }
+    #time {
         font-size: 4em;
 
     }
