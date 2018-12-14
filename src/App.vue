@@ -1,30 +1,49 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <Bookmarks class="container" />
+        <div class="container"></div>
+        <div class="container"></div>
+        <div class="container"></div>
+        <div class="container"></div>
+    </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Bookmarks from './components/Bookmarks.vue'
 
 export default {
     name: 'app',
     components: {
-        HelloWorld
+        Bookmarks
     }
 }
 </script>
 
 <style>
 #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    height: 100%;
-    padding-top: 60px;
-    background-image: url("./assets/pexels-photo-1482777.jpeg");
+
+    background: url("./assets/pexels-photo-1482777.jpeg") no-repeat center center fixed;
+    background-size: cover;
+
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas:
+        "top top"
+        "topleft topright"
+        "midleft midright"
+        "bottom bottom"
+    ;
+    grid-gap: 5% 5%;
+
+    box-sizing: border-box;
+    padding: 2%;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, .3);
+    border-radius: 0.3em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
 }
 </style>
