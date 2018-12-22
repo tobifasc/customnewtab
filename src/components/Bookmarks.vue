@@ -44,6 +44,12 @@
         box-shadow: 4px 4px 3px rgba(0, 0, 0, .5);
         width: 15em;
         margin: 5% auto;
+        transition: all 150ms ease-out;
+        cursor: pointer;
+    }
+    .bookmark:hover {
+        box-shadow: 8px 8px 5px rgba(0, 0, 0, .5);
+
     }
     .icon {
         height: 15vh;
