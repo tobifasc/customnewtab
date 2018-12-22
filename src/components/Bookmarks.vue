@@ -4,6 +4,7 @@
              v-for="bookmark in bookmarks"
              v-bind:key="bookmark.id"
              v-on:click="navigateTo(bookmark.url)">
+            <img class="icon" :src="bookmark.icon">
             <div class="title">
                 {{ bookmark.title }}
             </div>
@@ -17,10 +18,10 @@
         data () {
             return {
                 bookmarks: [
-                    { id: 1, url: 'https://www.youtube.com/', title: 'Youtube' },
-                    { id: 2, url: 'https://www.reddit.com/', title: 'Reddit' },
-                    { id: 3, url: 'https://www.gitlab.com/', title: 'Gitlab' },
-                    { id: 4, url: 'https://www.github.com/', title: 'Github' },
+                    { id: 1, url: 'https://www.youtube.com/', title: 'Youtube', icon: require('../assets/logo.png') },
+                    { id: 2, url: 'https://www.reddit.com/', title: 'Reddit', icon: require('../assets/logo.png') },
+                    { id: 3, url: 'https://www.gitlab.com/', title: 'Gitlab', icon: require('../assets/logo.png') },
+                    { id: 4, url: 'https://www.github.com/', title: 'Github', icon: require('../assets/logo.png') },
                 ]
             }
         },
@@ -43,6 +44,14 @@
         box-shadow: 4px 4px 3px rgba(0, 0, 0, .5);
         width: 15em;
         margin: 5% auto;
+    }
+    .icon {
+        height: 15vh;
+    }
+    .title {
+        border-top: 1px solid rgb(150, 150, 150);
+        padding: 1em;
+        color: darkslategray;
     }
 
 </style>
