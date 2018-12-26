@@ -9,7 +9,7 @@
                     <img :src="bookmark.icon">
                 </div>
                 <div class="title">
-                    <input v-if="edit" :value="bookmark.title"/>
+                    <input v-if="edit" v-model="bookmark.title"/>
                     <p v-else>{{ bookmark.title }}</p>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     location.href = url;
                 }
             }
-        },
+        }
     }
 </script>
 
