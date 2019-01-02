@@ -24,15 +24,19 @@
     export default {
         name: "bookmark",
         data () {
-            return {
-                bookmarks: [
+            let data = {bookmarks: [], edit: false};
+            if (window.localStorage.getItem('bookmarks') === null) {
+                data.bookmarks = [
                     { id: 1, url: 'https://www.youtube.com/', title: 'Youtube', icon: require('../assets/bookmarks/yt_logo_rgb_light.png') },
                     { id: 2, url: 'https://www.reddit.com/', title: 'Reddit', icon: require('../assets/bookmarks/Reddit_logo_full_1.png') },
                     { id: 3, url: 'https://www.gitlab.com/', title: 'Gitlab', icon: require('../assets/bookmarks/wm_web.svg') },
                     { id: 4, url: 'https://www.github.com/', title: 'Github', icon: require('../assets/bookmarks/GitHub-Logo.png') },
-                ],
-                edit: false
+                ];
+                window.localStorage.setItem('bookmarks', JSON.stringify(data.bookmarks));
+            } else {
+                data.bookmarks = JSON.parse(window.localStorage.getItem('bookmarks'));
             }
+            return data;
         },
         methods: {
             navigateTo (url) {
