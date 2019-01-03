@@ -9,7 +9,7 @@
                     <img :src="bookmark.icon">
                 </div>
                 <div class="title">
-                    <input v-if="edit" v-model="bookmark.title"/>
+                    <input v-if="edit" v-model="bookmark.title" @keyup.enter="saveBookmarks"/>
                     <p v-else>{{ bookmark.title }}</p>
                 </div>
             </div>
@@ -21,20 +21,31 @@
 </template>
 
 <script>
+    let bookmarkStorage = {
+        fetch: function () {
+             return JSON.parse(window.localStorage.getItem('bookmarks') || '[]');
+        },
+        save: function (bookmarks) {
+            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+        }
+
+    };
     export default {
         name: "bookmark",
         data () {
-            let data = {bookmarks: [], edit: false};
-            if (window.localStorage.getItem('bookmarks') === null) {
+            let data = {
+                bookmarks: bookmarkStorage.fetch(),
+                edit: false
+            };
+
+            if (data.bookmarks.length === 0) {
                 data.bookmarks = [
                     { id: 1, url: 'https://www.youtube.com/', title: 'Youtube', icon: require('../assets/bookmarks/yt_logo_rgb_light.png') },
                     { id: 2, url: 'https://www.reddit.com/', title: 'Reddit', icon: require('../assets/bookmarks/Reddit_logo_full_1.png') },
                     { id: 3, url: 'https://www.gitlab.com/', title: 'Gitlab', icon: require('../assets/bookmarks/wm_web.svg') },
                     { id: 4, url: 'https://www.github.com/', title: 'Github', icon: require('../assets/bookmarks/GitHub-Logo.png') },
                 ];
-                window.localStorage.setItem('bookmarks', JSON.stringify(data.bookmarks));
-            } else {
-                data.bookmarks = JSON.parse(window.localStorage.getItem('bookmarks'));
+                bookmarkStorage.save(data.bookmarks);
             }
             return data;
         },
@@ -43,6 +54,11 @@
                 if (!this.edit) {
                     location.href = url;
                 }
+            },
+            saveBookmarks () {
+                bookmarkStorage.save(this.bookmarks);
+                this.edit = false;
+
             }
         }
     }
