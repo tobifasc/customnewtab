@@ -13,6 +13,16 @@
                     <p v-else>{{ bookmark.title }}</p>
                 </div>
             </div>
+            <div class="bookmark new"
+                 v-if="edit"
+                @click="toggleAdd()">
+                <div class="icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="title" v-if="add">
+                    <input v-if="add" ref="newTitle" @keyup.enter="saveNewBookmark" />
+                </div>
+            </div>
         </div>
         <div id="edit" @click="edit = !edit">
             <i class="fas fa-edit"></i>
@@ -35,7 +45,8 @@
         data () {
             let data = {
                 bookmarks: bookmarkStorage.fetch(),
-                edit: false
+                edit: false,
+                add: false
             };
 
             if (data.bookmarks.length === 0) {
@@ -58,7 +69,17 @@
             saveBookmarks () {
                 bookmarkStorage.save(this.bookmarks);
                 this.edit = false;
-
+            },
+            toggleAdd () {
+                this.add = !this.add;
+                if (this.add) {
+                    this.$nextTick(() => this.$refs.newTitle.focus());
+                }
+            },
+            saveNewBookmark () {
+                this.add = false;
+                this.bookmarks.push({id: this.bookmarks.length+1, title: this.$refs.newTitle.value});
+                this.saveBookmarks();
             }
         }
     }
@@ -71,7 +92,7 @@
     }
     .bookmarks {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-auto-flow: column;
     }
     .bookmark {
         background-color: rgba(255, 255, 255, .5);
@@ -91,7 +112,7 @@
         margin: auto;
         display: flex;
     }
-    .icon img {
+    .icon * {
         max-height: 15vh;
         max-width: 15vh;
         margin: auto;
