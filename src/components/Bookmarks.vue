@@ -10,17 +10,18 @@
                 </div>
                 <div class="title">
                     <input v-if="edit" v-model="bookmark.title" @keyup.enter="saveBookmarks"/>
+                    <input v-if="edit" v-model="bookmark.url" @keyup.enter="saveBookmarks"/>
                     <p v-else>{{ bookmark.title }}</p>
                 </div>
             </div>
             <div class="bookmark new"
-                 v-if="edit"
-                @click="toggleAdd()">
-                <div class="icon">
+                 v-if="edit" >
+                <div class="icon" @click="toggleAdd()">
                     <i class="fas fa-plus"></i>
                 </div>
                 <div class="title" v-if="add">
-                    <input v-if="add" ref="newTitle" @keyup.enter="saveNewBookmark" />
+                    <input ref="newTitle" @keyup.enter="saveNewBookmark" />
+                    <input ref="newURL" @keyup.enter="saveNewBookmark" />
                 </div>
             </div>
         </div>
@@ -78,7 +79,7 @@
             },
             saveNewBookmark () {
                 this.add = false;
-                this.bookmarks.push({id: this.bookmarks.length+1, title: this.$refs.newTitle.value});
+                this.bookmarks.push({id: this.bookmarks.length+1, title: this.$refs.newTitle.value, url: this.$refs.newURL.value});
                 this.saveBookmarks();
             }
         }
