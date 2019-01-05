@@ -2,9 +2,12 @@
     <div class="bookmarks-container">
         <div class="bookmarks">
             <div class="bookmark"
-                 v-for="bookmark in bookmarks"
-                 v-bind:key="bookmark.id"
+                 v-for="(bookmark, index) in bookmarks"
+                 v-bind:key="index"
                  @click="navigateTo(bookmark.url)">
+                <div v-if="edit" class="delete" @click="deleteBookmark(index)">
+                    <i class="fas fa-trash"></i>
+                </div>
                 <div class="icon">
                     <img :src="bookmark.icon">
                 </div>
@@ -52,10 +55,10 @@
 
             if (data.bookmarks.length === 0) {
                 data.bookmarks = [
-                    { id: 1, url: 'https://www.youtube.com/', title: 'Youtube', icon: require('../assets/bookmarks/yt_logo_rgb_light.png') },
-                    { id: 2, url: 'https://www.reddit.com/', title: 'Reddit', icon: require('../assets/bookmarks/Reddit_logo_full_1.png') },
-                    { id: 3, url: 'https://www.gitlab.com/', title: 'Gitlab', icon: require('../assets/bookmarks/wm_web.svg') },
-                    { id: 4, url: 'https://www.github.com/', title: 'Github', icon: require('../assets/bookmarks/GitHub-Logo.png') },
+                    { url: 'https://www.youtube.com/', title: 'Youtube', icon: require('../assets/bookmarks/yt_logo_rgb_light.png') },
+                    { url: 'https://www.reddit.com/', title: 'Reddit', icon: require('../assets/bookmarks/Reddit_logo_full_1.png') },
+                    { url: 'https://www.gitlab.com/', title: 'Gitlab', icon: require('../assets/bookmarks/wm_web.svg') },
+                    { url: 'https://www.github.com/', title: 'Github', icon: require('../assets/bookmarks/GitHub-Logo.png') },
                 ];
                 bookmarkStorage.save(data.bookmarks);
             }
@@ -79,8 +82,12 @@
             },
             saveNewBookmark () {
                 this.add = false;
-                this.bookmarks.push({id: this.bookmarks.length+1, title: this.$refs.newTitle.value, url: this.$refs.newURL.value});
+                this.bookmarks.push({title: this.$refs.newTitle.value, url: this.$refs.newURL.value});
                 this.saveBookmarks();
+            },
+            deleteBookmark (index) {
+                this.bookmarks.splice(index, 1);
+                bookmarkStorage.save(this.bookmarks);
             }
         }
     }
@@ -102,6 +109,7 @@
         margin: 5% auto;
         transition: all 150ms ease-out;
         cursor: pointer;
+        position: relative;
     }
     .bookmark:hover {
         box-shadow: 8px 8px 5px rgba(0, 0, 0, .5);
@@ -138,6 +146,12 @@
     }
     #edit i {
         margin: auto;
+    }
+
+    .delete {
+        position: absolute;
+        right: 2px;
+        top: 2px;
     }
 
 </style>
