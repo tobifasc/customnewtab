@@ -2,7 +2,7 @@
     <div id="app">
         <Bookmarks class="container" />
         <Clock />
-        <div class="container"></div>
+        <Weather class="container"></Weather>
         <div class="container"></div>
         <div class="container"></div>
         <div class="container"></div>
@@ -12,12 +12,14 @@
 <script>
 import Bookmarks from './components/Bookmarks.vue'
 import Clock from './components/Clock.vue'
+import Weather from './components/Weather.vue'
 
 export default {
     name: 'app',
     components: {
         Bookmarks,
-        Clock
+        Clock,
+        Weather
     },
 }
 </script>
