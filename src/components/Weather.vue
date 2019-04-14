@@ -1,9 +1,10 @@
 <template>
     <div class="weather">
         <div class="day"
-             v-for="(weather, index) in weather.weather"
-             v-bind:key="index" >
-            <p>{{ kelvinToCelcius(weather.main.temp) }}</p>
+             v-for="(weather, index) in weather.daily.data.slice(0, 5)"
+             v-bind:key="index">
+            <p>{{ Math.round(weather.temperatureMax) }}°</p>
+            <p>{{ Math.round(weather.temperatureMin) }}°</p>
         </div>
 
     </div>
@@ -11,16 +12,15 @@
 
 <script>
     import request from 'request';
-    let moment = require('moment');
 
     let weatherData = {
         fetch: function () {
             if (!this.isValid()) {
-                request('https://api.openweathermap.org/data/2.5/forecast?id=2761369&APPID=' + process.env.VUE_APP_OWM_KEY, {json: true}, (error, response, body) => {
+                request('https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/' + process.env.VUE_APP_DARKSKY_KEY + '/48.208176,16.373819?units=si&exclude=currently,minutely,hourly,alerts,flags', {json: true}, (error, response, body) => {
                     if (error) {
                         return error;
                     }
-                    localStorage.setItem('weather', JSON.stringify({time: Date.now(), weather: this.getDailyFromHourly(body.list)}));
+                    localStorage.setItem('weather', JSON.stringify({time: Date.now(), daily: body.daily}));
                 });
             }
             return JSON.parse(localStorage.getItem('weather'));
@@ -32,32 +32,7 @@
                 return false;
             }
             return true;
-        },
-        getDailyFromHourly: function (list) {
-            let oldDate = null;
-            let oldEntry = null;
-            let weather = [];
-            let gotWeather = false;
-            list.forEach((entry) => {
-                let currentDate = moment(entry.dt * 1000);
-                if (oldDate == null ||
-                    !oldDate.isSame(currentDate, 'day')) {
-                    // new Day
-                    if (!gotWeather && oldEntry != null) {
-                        weather.push(oldEntry);
-                    }
-                    oldDate = currentDate;
-                    oldEntry = entry;
-                    gotWeather = false;
-                }
-                if (currentDate.hour() >= 12 && !gotWeather) {
-                    weather.push(entry);
-                    gotWeather = true;
-                }
-            });
-            return weather;
         }
-
     };
     export default {
         name: "weather",
@@ -70,9 +45,6 @@
             this.weather = weatherData.fetch();
         },
         methods: {
-            kelvinToCelcius (temp) {
-                return Math.round(temp - 273.15);
-            }
         }
     }
 </script>
