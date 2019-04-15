@@ -3,8 +3,10 @@
         <div class="day"
              v-for="(weather, index) in weather.daily.data.slice(0, 5)"
              v-bind:key="index">
+            <skycon :condition="weather.icon"></skycon>
             <p>{{ Math.round(weather.temperatureMax) }}°</p>
             <p>{{ Math.round(weather.temperatureMin) }}°</p>
+            <p>{{ moment.unix(weather.time).format("dddd") }}</p>
         </div>
 
     </div>
@@ -12,6 +14,7 @@
 
 <script>
     import request from 'request';
+    let moment = require('moment');
 
     let weatherData = {
         fetch: function () {
@@ -38,11 +41,14 @@
         name: "weather",
         data () {
             return {
-                weather: []
+                weather: [],
+                moment: moment
             }
         },
         created () {
             this.weather = weatherData.fetch();
+        },
+        mounted () {
         },
         methods: {
         }
