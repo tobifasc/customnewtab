@@ -6,7 +6,7 @@
             <skycon :condition="weather.icon"></skycon>
             <p>{{ Math.round(weather.temperatureMax) }}°</p>
             <p>{{ Math.round(weather.temperatureMin) }}°</p>
-            <p>{{ moment.unix(weather.time).format("dddd") }}</p>
+            <p>{{ moment.unix(weather.time).utcOffset(2).format("dddd") }}</p>
         </div>
 
     </div>
