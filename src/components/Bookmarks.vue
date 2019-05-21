@@ -19,8 +19,13 @@
             </div>
             <div class="bookmark new"
                  v-if="edit" >
-                <div class="icon" @click="toggleAdd()">
-                    <i class="fas fa-plus"></i>
+                <div class="icon">
+                    <div @click="toggleAdd()">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div v-if="add">
+                        <input ref="newIcon" type="file" accept="image/*">
+                    </div>
                 </div>
                 <div class="title" v-if="add">
                     <input ref="newTitle" @keyup.enter="saveNewBookmark" />
@@ -81,9 +86,18 @@
                 }
             },
             saveNewBookmark () {
-                this.add = false;
-                this.bookmarks.push({title: this.$refs.newTitle.value, url: this.$refs.newURL.value});
-                this.saveBookmarks();
+                const file = this.$refs.newIcon.files[0];
+
+                const reader = new FileReader();
+
+                reader.onload = (event) => {
+                    this.add = false;
+                    this.bookmarks.push({title: this.$refs.newTitle.value,
+                        url: this.$refs.newURL.value,
+                        icon: event.target.result});
+                    this.saveBookmarks();
+                };
+                reader.readAsDataURL(file);
             },
             deleteBookmark (index) {
                 this.bookmarks.splice(index, 1);
@@ -114,6 +128,12 @@
     .bookmark:hover {
         box-shadow: 8px 8px 5px rgba(0, 0, 0, .5);
 
+    }
+    .new .icon {
+        display: block;
+        margin: auto;
+        height: 15vh;
+        width: 15vh;
     }
     .icon {
         height: 15vh;
